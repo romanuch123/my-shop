@@ -114,7 +114,7 @@ Run the file (./dist/index.html) in browser Google Chrome.
     Annual Report 2019
     424.51 UAH
 
-> The total annual income will depend on the exchange rate
+> Total annual income will depend on the exchange rate
 
 ## Libraries
 
