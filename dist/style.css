@@ -1,0 +1,130 @@
+@font-face {
+  font-family: digital;
+  src: url(digital.ttf);
+}
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background: #ECE9E6;
+	background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+	font-family: 'Open Sans', sans-serif;
+	color: #444;
+  font-size: 18px;
+  text-align: center;
+}
+h1 {
+  margin: 15px;
+}
+.screen-wrapper {
+  background-color: black;
+  color: #00b100;
+  min-height: 50px;
+  border-radius: 8px;
+	border: solid 2px #00b100;
+  margin: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
+}
+.screen {
+  font-family: digital;
+  font-size: 35px;  
+}
+#shop {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px 0 20px 0;
+}
+#purchases, #control-panel {
+  width: 45%;
+  user-select: none;  
+}
+input, #currency-value, #report-currency {
+  width: 60%;
+  height: 40px;  
+  border-radius: 8px;
+	border: solid 1px #eee;   
+  margin: 5px; 
+  padding-left: 0px;
+  box-sizing: border-box;
+  padding-left: 10px;
+}
+input[type="date"]:focus, input[type="text"]:focus, input[type="number"]:focus, #currency-value:focus, #report-currency:focus {
+  outline: 0;
+  border-color: #e95d3c;
+}
+#product-name, #all {
+  width: calc(90% + 15px);
+}
+input[type="button"] {
+  background-color: #e95d3c;
+  color: white;
+}
+input[type="button"]:focus {
+  outline: 0;
+}
+input[type="button"]:hover {
+  background: #de3d27;
+}
+input[type="button"]:active {
+	background: #f16c14;
+}
+#currency-value, #purchase-btn, #clear-btn, #report-btn{
+  width: 30%;
+}
+#report-year {
+  width: 30%;
+}
+#report-currency {
+  width: calc(30% - 13px);
+}
+p {
+  margin: 5px; 
+  padding: 5px;
+  color: #155724;
+}
+.log-item {
+  margin: 0 15px 0 15px;
+  background-color: #d4edda;
+  border-radius: 8px;  
+  border-color: #c3e6cb;
+  position: relative;
+}
+.log-item-empty {
+  margin: 0 15px 0 15px;
+  position: relative;
+  border-radius: 8px;
+  background-color: #f8d7da;
+	border-color: #f5c6cb;
+}
+.date-log {  
+  position: absolute;
+  left: 10px;
+  top: 0;
+}
+.date-log-empty {
+  color: #721c24;
+  position: absolute;
+  left: 10px;
+  top: 0;
+}
+.empty {
+  padding: 10px;
+  color: #721c24;
+}
+[type="date"] {
+  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+  padding-right: 2%;
+}
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
