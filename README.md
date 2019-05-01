@@ -1,19 +1,19 @@
-#my-shop
+# my-shop
 
 Web application to collect an information about income and get annual income statistics.
 
-##How to use
+## How to use
 
 Run the file (./dist/index.html) in browser Google Chrome.
 
-##Usage
+## Usage
 
 1. In order to add a purchase, you need fill fields (product name, purchase amount, purchase currency, purchase date) and push the button "Purchase".
 2. In order to get all list purchased products, you need push the button "All".
 3. In order to removes all purchases for specified date, you need choose a date (on the left of the button "Clear") and push the button "Clear".
 4. In order to get annual income statistics, you need enter year and chose currency of report (on the left of the button "Report") and push the button "Report".
 
-##Examples
+## Examples
 
 **Input:**
 
@@ -116,7 +116,7 @@ Run the file (./dist/index.html) in browser Google Chrome.
 
 > The total annual income will depend on the exchange rate
 
-##Libraries
+## Libraries
 
 [jQuery](https://jquery.com/ "jQuery")
 [Typed.js](https://github.com/mattboldt/typed.js/blob/master/README.md "Typed.js")
