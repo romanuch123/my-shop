@@ -4,6 +4,18 @@ const model = {
     typeSpeed: 40,
     showCursor: false
   },
+  productName: '#product-name',
+  amountPurchase: '#amount-value',
+  currencyPurchase: '#currency-value',
+  purchaseDate: '#purchase-date',
+  purchaseBtn: '#purchase-btn',
+  allBtn: '#all',
+  clearDate: '#clear-date',
+  clearBtn: '#clear-btn',
+  reportYear: '#report-year',
+  reportCurrency: '#report-currency',
+  reportBtn: '#report-btn',
+  screenTyped: '#screen',
   typed: {},
   purchasedProducts: [],
   allPurchasesList: '',
@@ -11,7 +23,7 @@ const model = {
   logText: '',
   isProductsExistOnDate: false,
   currentYearPurchases: [],
-  yearReport: 0,
+  annualReport: 0,
 }
 
 const control = {
@@ -24,15 +36,15 @@ const control = {
 
     logView.init();
 
-    model.typed = new Typed(".screen", model.options);
+    model.typed = new Typed(model.screenTyped, model.options);
     model.purchasedProducts = JSON.parse(localStorage.purchasedProducts);
   },
-  addPurchasedProduct: function () {
+  addPurchasedProduct: function () {    
     model.purchasedProducts.push({
-      date: $('#purchase-date').val(),
-      product: $('#product-name').val(),
-      amount: $('#amount-value').val(),
-      currency: $('#currency-value').val()
+      date: $(model.purchaseDate).val(),
+      product: $(model.productName).val(),
+      amount: $(model.amountPurchase).val(),
+      currency: $(model.currencyPurchase).val()
     });
   },
   sortPurchasedProducts: function () {
@@ -46,7 +58,7 @@ const control = {
   getPurchasedProducts: function () {
     return model.purchasedProducts;
   },
-  setAllPurchasesList: function () {
+  setAllPurchasesList: function () {    
     model.allPurchasesList = '';
     model.purchasedProducts.forEach((elem, index, arr) => {
       if (index !== 0) {
@@ -67,8 +79,8 @@ const control = {
   },
   startScreenText: function (text) {
     model.typed.stop();
-    $('#see').html('');
-    model.typed = new Typed(".screen", {
+    $(model.screenTyped).html('');
+    model.typed = new Typed(model.screenTyped, {
       strings: [text],
       typeSpeed: 40,
       showCursor: false
@@ -83,7 +95,7 @@ const control = {
   },
   setIsProductsExistOnDate: function () {
     model.isProductsExistOnDate = model.purchasedProducts.some(elem => {
-      return elem.date === $('#clear-date').val();
+      return elem.date === $(model.clearDate).val();
     });
   },
   getIsProductsExistOnDate: function () {
@@ -91,7 +103,7 @@ const control = {
   },
   clearPurchasesOnDate: function () {
     model.purchasedProducts = model.purchasedProducts.filter(elem => {
-      return elem.date !== $('#clear-date').val();
+      return elem.date !== $(model.clearDate).val();
     });
     localStorage.purchasedProducts = JSON.stringify(model.purchasedProducts);
   },
@@ -105,21 +117,18 @@ const control = {
   },
   setCurrentYearPurchases: function () {
     model.currentYearPurchases = model.purchasedProducts.filter(elem => {
-      return new Date(elem.date).getFullYear() === +$('#report-year').val();
+      return new Date(elem.date).getFullYear() === +$(model.reportYear).val();
     });
   },
   getCurrentYearPurchases: function () {
     return model.currentYearPurchases;
   },
-  setYearReport: function () {
-    model.yearReport = 0;
+  setAnnualReport: function () {
+    model.annualReport = 0;
     model.currentYearPurchases.forEach(elem => {
-      model.yearReport += (elem.amount / model.currencyRates.rates[`${elem.currency}`]) * model.currencyRates.rates[`${$('#report-currency').val()}`];
+      model.annualReport += (elem.amount / model.currencyRates.rates[`${elem.currency}`]) * model.currencyRates.rates[`${$(model.reportCurrency).val()}`];
     });
-  },
-  getYearReport: function () {
-    return model.yearReport;
-  },
+  },  
   clearInputField: function () {
     $(':input')
     .not(':button')
@@ -152,13 +161,13 @@ const purchasesView = {
     this.$container.html(template);
   },
   handleClicks: function () {
-    this.$container.on('click', '#purchase-btn', function () {
-      if ($('#product-name').val() === '' || $('#amount-value').val() === '' || $('#currency-value').val() === null || $('#purchase-date').val() === '') {
+    this.$container.on('click', model.purchaseBtn, function () {
+      if ($(model.productName).val() === '' || $(model.amountPurchase).val() === '' || $(model.currencyPurchase).val() === null || $(model.purchaseDate).val() === '') {
         control.createLogText(`<div class="log-item-empty"><p class="date-log-empty">${new Date().toLocaleTimeString()}</p>
 <p class="empty"><b>Please, fill purchase fields and push the button «Purchase»</b></p></div>`);
         control.startScreenText('Please, fill purchase fields and push the button «Purchase»');
       } else {
-        if ($('#product-name').val() == 0 || $('#amount-value').val() <= 0 || $('#purchase-date').val() > new Date().toLocaleDateString().split('.').reverse().join('-')) {
+        if ($(model.productName).val() == 0 || $(model.amountPurchase).val() <= 0 || $(model.purchaseDate).val() > new Date().toLocaleDateString().split('.').reverse().join('-')) {
           control.createLogText(`<div class="log-item-empty"><p class="date-log-empty">${new Date().toLocaleTimeString()}</p>
           <p class="empty"><b>Check the correctness of entered data</b></p></div>`);
           control.startScreenText(`Check the correctness of entered data`);
@@ -203,7 +212,7 @@ const controlPanelView = {
     this.$container.html(template);
   },
   handleClicks: function () {
-    this.$container.on('click', '#all', function () {
+    this.$container.on('click', model.allBtn, function () {
       control.setAllPurchasesList();
       if (control.getPurchasedProducts().length) {
         control.createLogText(`<div class="log-item"><p class="date-log">${new Date().toLocaleTimeString()}</p>
@@ -216,8 +225,8 @@ const controlPanelView = {
       }
       control.clearInputField();
     });
-    this.$container.on('click', '#clear-btn', function () {
-      if (($('#clear-date').val()) === '') {
+    this.$container.on('click', model.clearBtn, function () {
+      if (($(model.clearDate).val()) === '') {
         control.createLogText(`<div class="log-item-empty"><p class="date-log-empty">${new Date().toLocaleTimeString()}</p>
   <p class="empty"><b>Please, chose date to clear</b></p></div>`);
         control.startScreenText('Please, chose date to clear');
@@ -234,23 +243,23 @@ const controlPanelView = {
               control.setAllPurchasesList();
               control.createLogText(`<div class="log-item"><p class="date-log">${new Date().toLocaleTimeString()}</p>
     <p>${control.getAllPurchasesList()}</p></div>`);
-              control.startScreenText(`Clear products purchased on ${($('#clear-date').val())}`);
+              control.startScreenText(`Clear products purchased on ${($(model.clearDate).val())}`);
             } else {
               control.createLogText(`<div class="log-item-empty"><p class="date-log-empty">${new Date().toLocaleTimeString()}</p>
     <p class="empty"><b>Product list is Empty</b></p></div>`);
-              control.startScreenText(`Clear products purchased on ${($('#clear-date').val())}`);
+              control.startScreenText(`Clear products purchased on ${($(model.clearDate).val())}`);
             }
             control.clearInputField();
           } else {
             control.createLogText(`<div class="log-item-empty"><p class="date-log-empty">${new Date().toLocaleTimeString()}</p>
-  <p class="empty"><b>No products purchased on ${($('#clear-date').val())}</b></p></div>`);
-            control.startScreenText(`No products purchased on ${($('#clear-date').val())}`);
+  <p class="empty"><b>No products purchased on ${($(model.clearDate).val())}</b></p></div>`);
+            control.startScreenText(`No products purchased on ${($(model.clearDate).val())}`);
           }
         }
       }
     });
-    this.$container.on('click', '#report-btn', function () {
-      if ($("#report-year").val() <= 0 || $("#report-year").val() > new Date().getFullYear()) {
+    this.$container.on('click', model.reportBtn, function () {
+      if ($(model.reportYear).val() <= 0 || $(model.reportYear).val() > new Date().getFullYear()) {
         control.createLogText(`<div class="log-item-empty"><p class="date-log-empty">${new Date().toLocaleTimeString()}</p>
         <p class="empty"><b>Wrong year of report</b></p></div>`);
         control.startScreenText(`Wrong year of report`);
@@ -259,14 +268,14 @@ const controlPanelView = {
         try {
           if (control.getCurrentYearPurchases().length) {
             control.setCurrencyRates();
-            control.setYearReport();
+            control.setAnnualReport();
             control.createLogText(`<div class="log-item"><p class="date-log">${new Date().toLocaleTimeString()}</p>
-    <p><b>Annual Report ${$('#report-year').val()}</b><br>${control.getYearReport().toFixed(2)} ${$('#report-currency').val()}</p></div>`);
-            control.startScreenText(`Annual Report ${$('#report-year').val()}`);
+    <p><b>Annual Report ${$(model.reportYear).val()}</b><br>${model.annualReport.toFixed(2)} ${$(model.reportCurrency).val()}</p></div>`);
+            control.startScreenText(`Annual Report ${$(model.reportYear).val()}`);
           } else {
             control.createLogText(`<div class="log-item-empty"><p class="date-log-empty">${new Date().toLocaleTimeString()}</p>
-    <p class="empty"><b>No purchases in ${$('#report-year').val()}</b></p></div>`);
-            control.startScreenText(`No purchases in ${$('#report-year').val()}`);
+    <p class="empty"><b>No purchases in ${$(model.reportYear).val()}</b></p></div>`);
+            control.startScreenText(`No purchases in ${$(model.reportYear).val()}`);
             control.clearInputField();
           }
         } catch (e) {
