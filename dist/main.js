@@ -188,7 +188,7 @@ const control = {
   },
   makeClearPurchases: function () {
     control.setIsProductsExistOnDate();
-    if (control.isProductsExistOnDate) {
+    if (model.isProductsExistOnDate) {
       control.clearPurchasesOnDate();
       control.showAllPurchasesList(`Clear products purchased on ${($(model.clearDate).val())}`, `Clear products purchased on ${($(model.clearDate).val())}`);
       control.clearInputField();
