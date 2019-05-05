@@ -69,6 +69,7 @@ input[type="button"]:focus {
 }
 input[type="button"]:hover {
   background: #de3d27;
+  cursor: pointer;
 }
 input[type="button"]:active {
 	background: #f16c14;
@@ -125,4 +126,15 @@ p {
 }
 [type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
+}
+
+input[type="button"][disabled]:active,
+input[type="button"][disabled],
+input[type="button"][disabled]:hover
+{
+  border: solid 1px #eee;
+  color: grey;
+  cursor: inherit;
+  background-color: #ddd;
+  background: #ddd;
 }
