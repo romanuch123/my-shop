@@ -4,20 +4,15 @@ Web application to collect an information about income and get annual income sta
 
 ## How to use
 
-Open console and enter path to folder dist in my-shop folder: 
+Install all packages:
 
-    cd ..path../my-shop/dist
+    npm install 
 
-Instal node_modules:
+Start server :
 
-    npm install node
-    npm install express
+    npm run start
 
-Enter :
-
-    node server.js or nodemon server.js
-
-Run http://localhost:3000/ in browser Google Chrome. 
+Open http://localhost:3000/ in browser Google Chrome. 
 
 ## Usage
 

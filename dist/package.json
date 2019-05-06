@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "server for my-app",
-  "main": "server",
+  "main": "*",
   "scripts": {
     "test": "*",
     "start": "node server.js"
@@ -12,12 +12,16 @@
     "url": "git+https://github.com/romanuch123/my-shop.git"
   },
   "keywords": [
-    "purchase"
+    "shop, purchase"
   ],
-  "author": "roman",
+  "author": "Romanuch123",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/romanuch123/my-shop/issues"
   },
-  "homepage": "https://github.com/romanuch123/my-shop#readme"
+  "homepage": "https://github.com/romanuch123/my-shop#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "node": "^12.1.0"
+  }
 }
