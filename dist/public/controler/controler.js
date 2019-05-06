@@ -1,29 +1,7 @@
-const model = {
-  options: {
-    strings: ["Welcome, my dear friends", "Nice to see you here"],
-    typeSpeed: 40,
-    showCursor: false
-  },
-  productName: '#product-name',
-  amountPurchase: '#amount-value',
-  currencyPurchase: '#currency-value',
-  purchaseDate: '#purchase-date',
-  purchaseBtn: '#purchase-btn',
-  allBtn: '#all',
-  clearDate: '#clear-date',
-  clearBtn: '#clear-btn',
-  reportYear: '#report-year',
-  reportCurrency: '#report-currency',
-  reportBtn: '#report-btn',
-  screenTyped: '#screen',
-  typed: {},
-  purchasedProducts: [],
-  allPurchasesList: '',
-  currencyRates: {},
-  isProductsExistOnDate: false,
-  currentYearPurchases: [],
-  annualReport: 0,
-};
+import model from '../model/model.js';
+import purchasesView from '../views/purcahseView.js';
+import controlPanelView from '../views/controlPanelView.js';
+import logView from '../views/logView.js';
 
 const control = {
   init: function () {
@@ -38,7 +16,14 @@ const control = {
     logView.init();
 
     model.typed = new Typed(model.screenTyped, model.options);
-    model.purchasedProducts = JSON.parse(localStorage.purchasedProducts);
+    this.getDataFromLocalStorage();
+  },
+  getDataFromLocalStorage: function() {
+    if (localStorage.purchasedProducts) {
+      model.purchasedProducts = JSON.parse(localStorage.purchasedProducts);
+    } else {
+      model.purchasedProducts = [];
+    }
   },
   // Get currency rates
   setCurrencyRates: function () {
@@ -50,15 +35,15 @@ const control = {
       .fail(function () { control.startScreenText(`Error. Cannot get currency rates`); });
   },
   getAllCurrencyValue: function () {
-    let curr = ``;
-    try {
-      for (key in model.currencyRates.rates) {
-        curr += `<option value="${key}">${key}</option><br>`;
+      let curr = ``;
+      try {
+        Object.keys(model.currencyRates.rates).forEach(elem => {
+          curr += `<option value="${elem}">${elem}</option><br>`;
+        })       
+      } catch (e) {
+        control.printErrorMessage(`Error. Cannot get currency rates`);
       }
-    } catch (e) {
-      control.printErrorMessage(`Error. Cannot get currency rates`);
-    }
-    return curr;
+      return curr;
   },
   startScreenText: function (text) {
     model.typed.stop();
@@ -223,117 +208,4 @@ const control = {
     }
   }
 };
-
-const purchasesView = {
-  init: function () {
-    this.$container = $('#purchases');
-    this.handleClicks();
-  },
-  render: function () {
-    let template = `
-<input type="text" name="product-name" id="product-name" placeholder="Please enter product name"/>
-<div id="price">
-<input type="number" name="amount-value" id="amount-value" placeholder="Please enter amount" min="0"/>
-<select name="currency-value" id="currency-value">
-<option value="" disabled selected>Currency</option>
-${control.getAllCurrencyValue()}
-</select>
-</div>
-<input type="date" name="purchase-date" id="purchase-date"/>
-<input type="button" id="purchase-btn" value="Purchase" disabled="true" title="Please, fill all fields">
-`;
-    this.$container.html(template);
-  },
-  handleClicks: function () {
-    this.$container.on('keyup', model.productName, function () {
-      control.allPurchaseFieldsAreFilled();
-    });
-    this.$container.on('keyup', model.amountPurchase, function () {
-      control.allPurchaseFieldsAreFilled();
-    });
-    this.$container.on('change', model.amountPurchase, function () {
-      control.allPurchaseFieldsAreFilled();
-    });
-    this.$container.on('change', model.currencyPurchase, function () {
-      control.allPurchaseFieldsAreFilled();
-    });
-    this.$container.on('change', model.purchaseDate, function () {
-      control.allPurchaseFieldsAreFilled();
-    });
-    this.$container.on('click', model.purchaseBtn, function (e) {
-      if (control.isEnterDataCorrect(e)) {
-        control.printErrorMessage(`Check the correctness of entered data`);
-      } else {
-        control.makePurchase();
-      }
-    });
-  }
-};
-
-const controlPanelView = {
-  init: function () {
-    this.$container = $('#control-panel');
-    this.handleClicks();
-  },
-  render: function () {
-    let template = `
-<input type="button" name="all" id="all" value="All"/>
-<div id="clear">
-<input type="date" name="clear-date" id="clear-date"/>
-<input type="button" name="clear-btn" id="clear-btn" value="Clear" disabled="true" title="Please, fill all fields"/>
-</div>
-<div id="report">
-<input type="number" name="report-year" id="report-year" min="0" max="2019" placeholder="Year of report"/>
-<select name="report-currency" id="report-currency">
-<option value="" disabled selected>Currency</option>
-${control.getAllCurrencyValue()}
-</select>
-<input type="button" name="report-btn" id="report-btn" value="Report" disabled="true" title="Please, fill all fields"/>
-</div> 
-`;
-    this.$container.html(template);
-  },
-  handleClicks: function () {
-    this.$container.on('click', model.allBtn, function () {
-      control.showAllPurchasesList('All purchases');
-    });
-    this.$container.on('change', model.clearDate, function () {
-      control.clearDateIsFilled();
-    });
-    this.$container.on('click', model.clearBtn, function (e) {
-      if (control.isEnterDataCorrect(e)) {
-        control.printErrorMessage(`Wrong clear date`);
-      } else {
-        control.makeClearPurchases();
-      }
-    });
-    this.$container.on('keyup', model.reportYear, function () {
-      control.allReportFieldsAreFilled();
-    });
-    this.$container.on('change', model.reportYear, function () {
-      control.allReportFieldsAreFilled();
-    });
-    this.$container.on('change', model.reportCurrency, function () {
-      control.allReportFieldsAreFilled();
-    });
-    this.$container.on('click', model.reportBtn, function (e) {
-      if (control.isEnterDataCorrect(e)) {
-        control.printErrorMessage(`Wrong year of report`);
-      } else {
-        control.showAnualReport();
-      }
-    });
-  }
-};
-
-const logView = {
-  init: function () {
-    this.$container = $('#log');
-  },
-  render: function (textLog) {
-    let template = textLog;
-    this.$container.after(template);
-  }
-};
-
-control.init();
+export default control;

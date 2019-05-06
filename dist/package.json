@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server for my-app",
+  "main": "*",
+  "scripts": {
+    "test": "*",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romanuch123/my-shop.git"
+  },
+  "keywords": [
+    "purchase"
+  ],
+  "author": "roman",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/romanuch123/my-shop/issues"
+  },
+  "homepage": "https://github.com/romanuch123/my-shop#readme"
+}
